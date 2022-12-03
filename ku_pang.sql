@@ -10,8 +10,9 @@ CREATE TABLE product
 
 CREATE TABLE stock
 (
-	stockId int AUTO_INCREMENT PRIMARY KEY,
+	productId int PRIMARY KEY,
     stockNum int default 0
+    foreign key (productId)
 );
 
 CREATE TABLE order_list
