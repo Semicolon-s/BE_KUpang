@@ -1,4 +1,5 @@
 import mysql from "mysql";
+import { resolve } from "path";
 
 const connect = () => {
 	const config = {
@@ -37,6 +38,7 @@ const insert = (table, fields, values) => {
 		if (err) console.log(err + ":: INSERT FAIL!");
 		console.log("INSERT SUCCESS!");
 		conn.end();
+		return result;
 	});
 };
 
@@ -46,7 +48,7 @@ const insert = (table, fields, values) => {
  * @param {string} table "stock"
  * @param {string, undefined} whereOptions "stockId=7"
  */
-const select = (fields, table, whereOptions) => {
+const select = async (fields, table, whereOptions) => {
 	let conn = connect();
 	let fieldsdStr = "";
 	for (const field of fields) {
@@ -59,11 +61,12 @@ const select = (fields, table, whereOptions) => {
 		sql += " WHERE " + whereOptions;
 	}
 	console.log(sql);
-	conn.query(sql, (err, result) => {
-		if (err) console.log(err + ":: SELECT FAIL!");
-		console.log("SELECT SUCCESS!");
-		conn.end();
-		return result;
+	return new Promise((res, rej) => {
+		conn.query(sql, (err, result) => {
+			if (err) console.log(err);
+			res(result);
+			console.log(result);
+		});
 	});
 };
 

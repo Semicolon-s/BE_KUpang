@@ -1,96 +1,44 @@
-// DB crud 접근
-// 기능 처리
+import { insert, select, update, del } from "../repository/DBManagement.js";
 
-//현재 등록되어 있는 상품의 목록 불러오기
-//상품이름으로 검색
-//주문내역 불러오기
-//주문내역 검색하기
-async function search(name, category) {
-  let dbname;
-  let where;
-  if (category == "상품") {
-    dbname = product;
-  } else if (category == "재고") {
-    dbname = stock;
-    where = all;
-  } else if (category == "주문") {
-    dbname = order_list;
-    where = productId;
-  }
-  const result = await db.query;
+const addProduct = (productName, imgUrl) => {
+	if (productName == "") throw new Error("value can't be Null");
+	insert("product", ["productName", "imgUrl"], [productName, imgUrl]);
+};
+const addStock = (productId, stockNum) => {
+	insert("stock", ["productId", "stockNum"], [productId, stockNum]);
+};
+const addOrderList = (productId, orderNum, buyer, phonenumber, address, orderState) => {
+	if (buyer == "" || phonenumber == "" || address == "") throw new Error("value can't be Null");
+	if (isNaN(productId) || isNaN(orderNum) || isNaN(phonenumber) || isNaN(orderState)) throw new Error("value is uncorrect format");
+	insert(
+		"order_list",
+		["productId", "orderNum", "buyer", "phonenumber", "address", "orderState"],
+		[productId, orderNum, buyer, phonenumber, address, orderState]
+	);
+};
+const addUser = (userName, userPassword, userToken) => {
+	if (userName == "" || userPassword == "" || userToken == "") throw new Error("value can't be Null");
+	insert("user", ["userName", "userPassword", "userToken"], [userName, userPassword, userToken]);
+};
+const addWarehouseHistory = (productId, warhouseState, warhouseNum) => {
+	if (isNaN(productId) || isNaN(warhouseNum) || isNaN(warhouseState)) throw new Error("value can't be Null");
+	insert("warehouse_history", ["productId", "warhouseState", "warhouseNum"], [productId, warhouseState, warhouseNum]);
+};
 
-  let message;
+const deleteProduct = (productId) => {
+	if (isNaN(productId)) throw new Error("value can't be Null");
+	del("product", "productId=" + productId);
+};
 
-  if (result == null) {
-    message = "Error in creating";
-    console.log("Error");
-  }
+const deleteStock = () => {};
+const deleteOrderList = () => {};
+const deleteUser = () => {};
+const deleteWarehouseHistory = () => {};
 
-  return { message };
-}
+const selectProduct = async (fields, table, whereOptions) => {
+	const data = await select(fields, table, whereOptions);
+	console.log("respository service  : " + data + "\n\n");
+	return data;
+};
 
-//상품 등록
-//주문 내역 추가
-async function add(name, category) {
-  let dbname;
-  let where;
-  if (category == "상품") {
-    dbname = product;
-  } else if (category == "재고") {
-    dbname = stock;
-    where = all;
-  } else if (category == "주문") {
-    dbname = order_list;
-    where = productId;
-  }
-  const result = await db.query;
-
-  let message;
-
-  if (result == null) {
-    message = "Error in creating";
-    console.log("Error");
-  }
-
-  return { message };
-}
-//상품정보수정 입고 출고
-//주문 확인 → 재고 감소
-//재고내역 수정
-async function update(id, programmingLanguage) {
-  let dbname;
-  let where;
-  if (category == "상품") {
-    dbname = product;
-  } else if (category == "재고") {
-    dbname = stock;
-    where = all;
-  } else if (category == "주문") {
-    dbname = order_list;
-    where = productId;
-  }
-  const result = await db.query;
-  let message = "Error in updating programming language";
-
-  if (result == null) {
-    message = "Error in creating";
-    console.log("Error");
-  }
-
-  return { message };
-}
-//상품 삭제
-async function remove(id) {
-  const result = await db.query;
-
-  let message = "Error in updating programming language";
-
-  if (result == null) {
-    message = "Error in creating";
-    console.log("Error");
-  }
-
-  return { message };
-}
-
-export { search, add, update, remove };
+export { selectProduct };
