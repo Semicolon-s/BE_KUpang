@@ -1,0 +1,53 @@
+import {
+  getNearByArriveList,
+  getBusLineInfo,
+  getStationArriveList,
+  getNearByBusArriveListAPI,
+  getBusStationonArriveListAPI,
+} from "../axios/dbBusaxios.js";
+//함수명 수정
+//get post delete patch
+import express from "express";
+const stock = express.Router();
+
+stock.get("/", (req, res, next) => {
+  console.log("재고내역 불러오기");
+  getNearByArriveList().then(
+    (value) => res.send(value),
+    (error) => {
+      console.log(error);
+      res.status(500).send("Sorry, result is not found");
+    }
+  );
+});
+
+stock.patch("/:updateProductNum", (req, res) => {
+  console.log("재고내역 수정");
+  if (req.params.param == undefined || req.params.num == undefined)
+    return res.status(400).json({
+      status: "error",
+      error: "Sorry, busNum is uncorrect!",
+    });
+  getBusLineInfo(req.params.param, req.params.num).then(
+    (value) => res.send(value),
+    (error) => {
+      console.log(error);
+      res.status(500).send("Sorry, result is not found");
+    }
+  );
+});
+
+stock.get("/filter", (req, res, next) => {
+  if (req.params.param == undefined || req.params.num == undefined)
+    return next();
+  console.log("request param →1 :입고 0:출고");
+  getStationArriveList(req.params.param, req.params.num).then(
+    (value) => res.send(value),
+    (error) => {
+      console.log(error);
+      res.status(500).send("Sorry, result is not found");
+    }
+  );
+});
+
+export { stock };
