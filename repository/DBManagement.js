@@ -35,7 +35,10 @@ const insert = (table, fields, values) => {
 	valuesStr = valuesStr.substring(0, valuesStr.length - 1);
 	let sql = `INSERT INTO ${table} (${fieldsdStr}) VALUES (${valuesStr})`;
 	conn.query(sql, (err, result) => {
-		if (err) console.log(err + ":: INSERT FAIL!");
+		if (err) {
+			console.log(err + ":: INSERT FAIL!");
+			throw new Error("QUERY FAIL");
+		}
 		console.log("INSERT SUCCESS!");
 		conn.end();
 		return result;
@@ -63,7 +66,10 @@ const select = async (fields, table, whereOptions) => {
 	console.log(sql);
 	return new Promise((res, rej) => {
 		conn.query(sql, (err, result) => {
-			if (err) console.log(err);
+			if (err) {
+				console.log(err);
+				throw new Error("QUERY FAIL");
+			}
 			res(result);
 			console.log(result);
 		});
@@ -82,8 +88,12 @@ const update = (table, updateOptions, whereOptions) => {
 	if (whereOptions != undefined && whereOptions.length != 0) {
 		sql += " WHERE " + whereOptions;
 	}
+	console.log(sql);
 	conn.query(sql, (err, result) => {
-		if (err) console.log(err + ":: UPDATE FAIL!");
+		if (err) {
+			console.log(err + ":: UPDATE FAIL!");
+			throw new Error("QUERY FAIL");
+		}
 		console.log("UPDATE SUCCESS!");
 		conn.end();
 	});
@@ -101,7 +111,10 @@ const del = (table, whereOptions) => {
 		sql += " WHERE " + whereOptions;
 	}
 	conn.query(sql, (err, result) => {
-		if (err) console.log(err + ":: DELETE FAIL!");
+		if (err) {
+			console.log(err + ":: DELETE FAIL!");
+			throw new Error("QUERY FAIL");
+		}
 		console.log("DELETE SUCCESS!");
 		conn.end();
 	});

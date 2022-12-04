@@ -1,13 +1,13 @@
 import { insert, select, update, del } from "../repository/DBManagement.js";
 
-const addProduct = (productName, imgUrl) => {
+const insertProduct = (productName, imgUrl) => {
 	if (productName == "") throw new Error("value can't be Null");
 	insert("product", ["productName", "imgUrl"], [productName, imgUrl]);
 };
 const addStock = (productId, stockNum) => {
 	insert("stock", ["productId", "stockNum"], [productId, stockNum]);
 };
-const addOrderList = (productId, orderNum, buyer, phonenumber, address, orderState) => {
+const insertOrder = (productId, orderNum, buyer, phonenumber, address, orderState) => {
 	if (buyer == "" || phonenumber == "" || address == "") throw new Error("value can't be Null");
 	if (isNaN(productId) || isNaN(orderNum) || isNaN(phonenumber) || isNaN(orderState)) throw new Error("value is uncorrect format");
 	insert(
@@ -21,24 +21,26 @@ const addUser = (userName, userPassword, userToken) => {
 	insert("user", ["userName", "userPassword", "userToken"], [userName, userPassword, userToken]);
 };
 const addWarehouseHistory = (productId, warhouseState, warhouseNum) => {
-	if (isNaN(productId) || isNaN(warhouseNum) || isNaN(warhouseState)) throw new Error("value can't be Null");
+	if (isNaN(productId) || isNaN(warhouseNum) || isNaN(warhouseState)) throw new Error("value is uncorrect format");
 	insert("warehouse_history", ["productId", "warhouseState", "warhouseNum"], [productId, warhouseState, warhouseNum]);
 };
 
-const deleteProduct = (productId) => {
+const updateProduct = (productId, productName, imgUrl) => {
+	if (isNaN(productId)) throw new Error("value is uncorrect format");
+	if (productName == "" || imgUrl == "") throw new Error("value can't be Null");
+	update("product", "productName='" + productName + "',imgUrl='" + imgUrl + "'", "productId=" + productId);
+};
+
+const delProduct = (productId) => {
 	if (isNaN(productId)) throw new Error("value can't be Null");
 	del("product", "productId=" + productId);
 };
-
 const deleteStock = () => {};
 const deleteOrderList = () => {};
 const deleteUser = () => {};
 const deleteWarehouseHistory = () => {};
 
-const selectProduct = async (fields, table, whereOptions) => {
-	const data = await select(fields, table, whereOptions);
-	console.log("respository service  : " + data + "\n\n");
-	return data;
-};
+const selectProduct = async (fields, table, whereOptions) => await select(fields, table, whereOptions);
+const selectOrder = async (fields, table, whereOptions) => await select(fields, table, whereOptions);
 
-export { selectProduct };
+export { selectProduct, insertProduct, delProduct, updateProduct, selectOrder, insertOrder };
