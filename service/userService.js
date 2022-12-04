@@ -24,8 +24,8 @@ const addOrder = (
   address,
   orderState
 ) => insertOrder(productId, orderNum, buyer, phonenumber, address, orderState);
-const editStock = (productId) => updateStock(productId);
 const getAllStockList = async () => await selectStock(["*"], "stock");
+const editStock = (productId, stockNum) => updateStock(productId, stockNum);
 export {
   getAllProductList,
   addProduct,
