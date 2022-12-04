@@ -8,13 +8,16 @@ productRouter.use(express.json());
 productRouter.get("/", async (req, res, next) => {
 	try {
 		const data = await getAllProductList();
-		return res.status(200).send(
-			JSON.stringify({
-				statusCode: 200,
-				message: "상품 목록 불러오기",
-				data: data,
-			})
-		);
+		return res
+			.status(200)
+			.header("Access-Control-Allow-Origin", "*")
+			.send(
+				JSON.stringify({
+					statusCode: 200,
+					message: "상품 목록 불러오기",
+					data: data,
+				})
+			);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(
@@ -31,12 +34,15 @@ productRouter.post("/add", (req, res, next) => {
 	if (body.productName == undefined || body.imgUrl == undefined) return res.status(404);
 	try {
 		addProduct(body.productName, body.imgUrl);
-		return res.status(200).send(
-			JSON.stringify({
-				statusCode: 200,
-				message: "상품 추가",
-			})
-		);
+		return res
+			.status(200)
+			.header("Access-Control-Allow-Origin", "*")
+			.send(
+				JSON.stringify({
+					statusCode: 200,
+					message: "상품 추가",
+				})
+			);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(
@@ -52,12 +58,15 @@ productRouter.delete("/delete", (req, res, next) => {
 	if (req.query.productId == undefined) return res.status(404);
 	try {
 		deleteProduct(req.query.productId);
-		return res.status(200).send(
-			JSON.stringify({
-				statusCode: 200,
-				message: "상품 삭제",
-			})
-		);
+		return res
+			.status(200)
+			.header("Access-Control-Allow-Origin", "*")
+			.send(
+				JSON.stringify({
+					statusCode: 200,
+					message: "상품 삭제",
+				})
+			);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(
