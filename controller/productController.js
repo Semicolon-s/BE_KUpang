@@ -82,12 +82,15 @@ productRouter.patch("/update", (req, res, next) => {
 	if (req.query.productId == undefined || req.query.productName == undefined || req.query.imgUrl == undefined) return res.status(404);
 	try {
 		editProduct(req.query.productId, req.query.productName, req.query.imgUrl);
-		return res.status(200).send(
-			JSON.stringify({
-				statusCode: 200,
-				message: "상품 수정",
-			})
-		);
+		return res
+			.status(200)
+			.header("Access-Control-Allow-Origin", "*")
+			.send(
+				JSON.stringify({
+					statusCode: 200,
+					message: "상품 수정",
+				})
+			);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send(
