@@ -64,11 +64,12 @@ const delProduct = (productId) => {
   del("product", "productId=" + productId);
 };
 
-const updateStock = (productId) => {
+const updateStock = (productId, stockNum) => {
   if (isNaN(productId)) throw new Error("value is uncorrect format");
 
-  update("stock", "stockNum=stockNum-1", "productId=" + productId);
+  update("stock", "stockNum=" + stockNum, "productId=" + productId);
 };
+
 const deleteStock = () => {};
 const deleteOrderList = () => {};
 const deleteUser = () => {};

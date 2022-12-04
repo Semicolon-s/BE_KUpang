@@ -27,9 +27,10 @@ stockRouter.get("/", async (req, res, next) => {
 });
 
 stockRouter.patch("/updateProductNum", (req, res, next) => {
-  if (req.query.productId == undefined) return res.status(404);
+  if (req.query.productId == undefined || req.query.stockNum == undefined)
+    return res.status(404);
   try {
-    editStock(req.query.productId);
+    editStock(req.query.productId, req.query.stockNum);
     return res.status(200).send(
       JSON.stringify({
         statusCode: 200,
