@@ -1,12 +1,11 @@
-import { selectProduct } from "./repositoryService.js";
-const getAllProductList = async () => {
-	let data = await selectProduct(["*"], "product");
-	let list = [];
-	// for (let i = 0; i < data.length; i++) {
-	// 	console.log(await data[i]);
-	// 	list.push(data[i]);
-	// }
-	console.log("user service  : " + data + "\n\n");
-	return data;
-};
-export { getAllProductList };
+import { selectProduct, insertProduct, delProduct, updateProduct, selectOrder, insertOrder } from "./repositoryService.js";
+
+const getAllProductList = async () => await selectProduct(["*"], "product");
+const addProduct = (productName, imgUrl) => insertProduct(productName, imgUrl);
+const deleteProduct = (productId) => delProduct(productId);
+const editProduct = (productId, productName, imgUrl) => updateProduct(productId, productName, imgUrl);
+
+const getAllOrderList = async () => await selectOrder(["*"], "order_list");
+const addOrder = (productId, orderNum, buyer, phonenumber, address, orderState) => insertOrder(productId, orderNum, buyer, phonenumber, address, orderState);
+
+export { getAllProductList, addProduct, deleteProduct, editProduct, getAllOrderList, addOrder };
