@@ -37,11 +37,12 @@ orderRouter.post("/add", async (req, res, next) => {
 		body.buyer == undefined ||
 		body.phonenumber == undefined ||
 		body.address == undefined ||
-		body.orderState == undefined
+		body.orderState == undefined ||
+		body.productName == undefined
 	)
 		return res.status(404);
 	try {
-		addOrder(body.productId, body.orderNum, body.buyer, body.phonenumber, body.address, body.orderState);
+		addOrder(body.productId, body.productName, body.orderNum, body.buyer, body.phonenumber, body.address, body.orderState);
 		return res
 			.status(200)
 			.header("Access-Control-Allow-Origin", "*")
